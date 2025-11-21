@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <Nullable>disable</Nullable>
+        <IsMac>false</IsMac>
+        <IsMac Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))'">true</IsMac>
+
+        <!-- For Windows users, please fill the folder path which contains Duckov.exe below -->
+        <DuckovPath>D:\Programs\Steam\steamapps\common\Escape from Duckov</DuckovPath>
+
+        <!-- For Mac users, please fill the folder path which contains Duckov.app below -->
+        <DuckovPath Condition="'$(IsMac)'">/Users/Somebody/Library/Application Support/Steam/steamapps/common/Escape from Duckov</DuckovPath>
+
+        <SubPath>\Duckov_Data\Managed\</SubPath>
+        <SubPath Condition="'$(IsMac)'">/Duckov.app/Contents/Resources/Data/Managed/</SubPath>
+
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="$(DuckovPath)$(SubPath)TeamSoda.*">
+	      <Private>False</Private>
+	    </Reference>
+        <Reference Include="$(DuckovPath)$(SubPath)ItemStatsSystem.dll">
+	      <Private>False</Private>
+	    </Reference>
+        <Reference Include="$(DuckovPath)$(SubPath)Unity*">
+	      <Private>False</Private>
+	    </Reference>
+        <Reference Include="$(DuckovPath)$(SubPath)UniTask.dll">
+	      <Private>False</Private>
+	    </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="0Harmony">
+          <HintPath>..\Escape-From-Duckov-Coop-Mod-Preview\Shared\0Harmony.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+</Project>
