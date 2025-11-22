@@ -296,8 +296,19 @@ namespace FireWithMoney
 
                 if (!mod.HasEnoughMoney(totalCost))
                 {
-                    __instance.Holder.PopText($"余额不足！需要 {totalCost}", -1f);
-                    return;
+                    // 如果余额不足，判断最小购买量
+                    int affordableBullets = (int)(EconomyManager.Money / costPerBullet);
+                    if (affordableBullets <= 0)
+                    {
+                        __instance.Holder.PopText($"余额不足！需要 {totalCost} 元", -1f);
+                        return;
+                    }
+                    else
+                    {
+                        bulletsNeeded = affordableBullets;
+                        totalCost = costPerBullet * bulletsNeeded;
+                    }
+                    
                 }
 
                 // 扣款并临时创建子弹到背包
@@ -315,7 +326,7 @@ namespace FireWithMoney
                         
                         if (added)
                         {
-                            __instance.Holder.PopText($"购买弹药 -{totalCost}", -1f);
+                            __instance.Holder.PopText($"购买弹药 -{totalCost} 元", -1f);
                             Debug.Log($"[FireWithMoney] Added {bulletsNeeded} bullets to inventory for reload");
                         }
                         else
