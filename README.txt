@@ -1,43 +1,113 @@
-纸弹 (FireWithMoney)
+[h1]纸弹 (Fire With Money)[/h1]
 
-介绍：
-换弹时如果背包没有子弹，自动从银行余额扣款购买，并上弹。
+[h2]介绍[/h2]
+换弹时如果背包没有子弹，自动从银行卡余额或背包现金中扣款购买并上弹。
 
-警告：可能破坏游戏体验（降低资源管理难度）
+[b]核心功能：[/b]
+[list]
+[*]按 [b]Shift+B[/b] 切换支付方式（银行卡💳 / 现金💵）
+[*]按 [b]R[/b] 键换弹，或按 [b]T[/b] 键切换弹药类型
+[*]显示所有弹药类型并按品质分级排序
+[/list]
 
-功能：
-- 自动购买子弹到背包
-- 保留正常换弹动画
-- 显示所有弹药类型并分级排序
-- 购买失败自动退款
+[h2]注意事项[/h2]
+[strike]建议通关后或休闲模式使用[/strike]
 
-使用：
-按 R 键换弹，或者按 T 键更换弹药类型，背包没弹药时自动购买
+[hr][/hr]
 
-注意：
-- 需要足够的银行余额
-- 建议通关后使用
+[h2]弹药价格表（共43种）[/h2]
 
+[b]手枪/冲锋枪弹（S弹）[/b]
+[olist]
+[*]生锈弹：1 元
+[*]普通弹：5 元
+[*]穿甲弹：30 元
+[*]高级穿甲弹：84 元
+[*]特种穿甲弹：144 元
+[/olist]
 
----
+[b]突击步枪弹（AR弹）[/b]
+[olist]
+[*]生锈弹：1 元
+[*]普通弹：7 元
+[*]穿甲弹：43 元
+[*]高级穿甲弹：120 元
+[*]特种穿甲弹：208 元
+[/olist]
 
-FireWithMoney
+[b]轻机枪弹（L弹）[/b]
+[olist]
+[*]生锈弹：2 元
+[*]普通弹：12 元
+[*]穿甲弹：75 元
+[*]高级穿甲弹：210 元
+[*]特种穿甲弹：365 元
+[/olist]
 
-Description:
-Automatically purchase bullets from bank balance when reloading if your backpack is empty.
+[b]马格南弹（MAG弹）[/b]
+[olist]
+[*]普通弹：56 元
+[*]穿甲弹：168 元
+[*]高级穿甲弹：560 元
+[*]特种穿甲弹：1664 元
+[/olist]
 
-Warning: May break game balance (reduces resource management difficulty)
+[b]狙击弹[/b]
+[olist]
+[*]生锈弹：5 元
+[*]普通弹：35 元
+[*]穿甲弹：105 元
+[*]高级穿甲弹：350 元
+[*]特种穿甲弹：1040 元
+[/olist]
 
-Features:
-- Auto-purchase bullets to backpack
-- Keep original reload animation
-- Display all ammo types with tier sorting
-- Auto-refund on purchase failure
+[b]霰弹[/b]
+[olist]
+[*]生锈弹：3 元
+[*]普通弹：21 元
+[*]穿甲弹：126 元
+[*]高级穿甲弹：360 元
+[*]特种穿甲弹：624 元
+[/olist]
 
-Usage:
-Press R to reload or T to switch ammo type, auto-purchase if backpack is empty
+[b]箭矢[/b]
+[olist]
+[*]木矢：3 元
+[*]低级穿甲箭：98 元
+[*]中级穿甲箭：326 元
+[*]爆炸矢：520 元
+[/olist]
 
-Notes:
-- Requires sufficient bank balance
-- Recommended for post-game use
+[b]能量弹[/b]
+[olist]
+[*]小能量弹：26 元
+[*]强化小能量弹：186 元
+[*]大型能量弹：52 元
+[/olist]
+
+[b]特殊弹药[/b]
+[olist]
+[*]火箭弹：520 元
+[*]粑粑弹：1 元
+[/olist]
+
+[hr][/hr]
+
+[h2]English Version[/h2]
+
+[h1]Fire With Money[/h1]
+
+[h2]Description[/h2]
+Automatically purchase and load bullets from bank balance or backpack cash when reloading if no ammo in inventory.
+
+[b]Core Features:[/b]
+[list]
+[*]Press [b]Shift+B[/b] to toggle payment mode (Bank💳 / Cash💵)
+[*]Press [b]R[/b] to reload or [b]T[/b] to switch ammo type
+[*]Support all ammo types (43)
+[/list]
+
+[h2]Note[/h2]
+[strike]Recommended for post-game or casual gameplay[/strike]
+
 

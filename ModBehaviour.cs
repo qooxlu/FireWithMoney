@@ -399,7 +399,7 @@ namespace FireWithMoney
                     {
                         string paymentType = mod.UseBankBalance ? "银行卡" : "现金";
                         int needCost = (int)(totalCost - availableMoney);
-                        __instance.Holder.PopText($"{paymentType}余额不足！还需要 {needCost} 元", -1f);
+                        __instance.Holder.PopText($"{paymentType}余额不足！还需要 {needCost} 元 [按 Shift+B 切换支付方式]", -1f);
                         return;
                     }
                     
@@ -408,7 +408,7 @@ namespace FireWithMoney
                     totalCost = costPerBullet * bulletsNeeded;
                     
                     string paymentTypeInfo = mod.UseBankBalance ? "银行卡" : "现金";
-                    __instance.Holder.PopText($"{paymentTypeInfo}余额不足，购买 {bulletsNeeded} 发", 1f);
+                    __instance.Holder.PopText($"{paymentTypeInfo}余额不足，购买 {bulletsNeeded} 发 [按 Shift+B 切换支付方式]", 1f);
                 }
 
                 // 扣款并临时创建子弹到背包

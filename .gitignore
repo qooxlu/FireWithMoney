@@ -11,3 +11,6 @@ Release/
 # Rider
 .idea/
 *.sln.DotSettings.user
+
+# Bat
+*.bat
