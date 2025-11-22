@@ -11,11 +11,24 @@ Fire With Money - Buy Ammo Anytime, Anywhere
 - 按 **Shift+B** 切换支付方式（银行卡💳 / 现金💵）
 - 按 **R** 键换弹，或按 **T** 键切换弹药类型
 - 显示所有弹药类型并按品质分级排序
-- 购买失败自动退款
 
 ### 注意事项
 
 ~~建议通关后或休闲模式使用~~
+
+### 兼容性
+
+**兼容第三方弹药模组：**
+- [J-lab扩展包](https://steamcommunity.com/sharedfiles/filedetails/?id=3600744984)
+- [鸭区突围 模组包v2.3](https://steamcommunity.com/sharedfiles/filedetails/?id=3593422388)
+
+本 mod 使用 Harmony 框架修改游戏方法。如果其他 mod 也修改了以下内容，可能会产生冲突：
+- 子弹显示系统 (`GetBulletTypesInInventory`)
+- 换弹逻辑 (`BeginReload`)
+- 经济系统 (`EconomyManager`)
+- 背包系统 (`Inventory`)
+
+如遇冲突，请尝试调整 mod 加载顺序或禁用冲突的 mod。
 
 ---
 
@@ -96,7 +109,7 @@ Automatically purchase and load bullets from bank balance or backpack cash when 
 
 ### Core Features
 
-- Press **Ctrl+B** to toggle payment mode (Bank💳 / Cash💵)
+- Press **Shift+B** to toggle payment mode (Bank💳 / Cash💵)
 - Press **R** to reload or **T** to switch ammo type
 - Display all ammo types with tier-based sorting
 - Auto-refund on purchase failure

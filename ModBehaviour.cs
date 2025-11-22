@@ -38,6 +38,12 @@ namespace FireWithMoney
             { 597, 30 },   // S弹 - 穿甲弹
             { 598, 84 },   // S弹 - 高级穿甲弹
             { 691, 144 },  // S弹 - 特种穿甲弹
+            // 暗区突围
+            { 4300003, 186 },   // S-超压穿甲手枪弹 
+            // J-lab扩展包
+            { 20250626, 50 },   // S-肉伤弹
+            { 20250612, 90 },   // S-碎甲弹
+            { 20250627, 280 },  // S-钝伤弹
 
             // AR弹系列
             { 603, 1 },    // AR弹 - 生锈弹
@@ -45,6 +51,12 @@ namespace FireWithMoney
             { 606, 43 },   // AR弹 - 穿甲弹
             { 607, 120 },  // AR弹 - 高级穿甲弹
             { 694, 208 },  // AR弹 - 特种穿甲弹
+            // 暗区突围
+            { 4300001, 436 },   // AR-碳化钨芯穿甲弹
+            // J-lab扩展包
+            { 20250661, 80 },   // AR-肉伤弹
+            { 20250658, 150 },  // AR-碎甲弹
+            { 20250655, 400 },  // AR-钝伤弹
 
             // L弹系列
             { 612, 2 },    // L弹 - 生锈弹
@@ -52,12 +64,20 @@ namespace FireWithMoney
             { 615, 75 },   // L弹 - 穿甲弹
             { 616, 210 },  // L弹 - 高级穿甲弹
             { 698, 365 },  // L弹 - 特种穿甲弹
+            // 暗区突围
+            { 4300002, 456 },   // BR-硬化钢芯穿甲弹
+            // J-lab扩展包
+            { 20250663, 200 },  // L-肉伤弹
+            { 20250660, 350 },  // L-碎甲弹
+            { 20250656, 700 },  // L-钝伤弹
 
             // MAG弹系列
             { 640, 56 },    // MAG弹 - 普通弹
             { 708, 168 },   // MAG弹 - 穿甲弹
             { 709, 560 },   // MAG弹 - 高级穿甲弹
             { 710, 1664 },  // MAG弹 - 特种穿甲弹
+            // 暗区突围
+            { 4300006, 1248 },   // MAG-全被甲硬心穿甲弹
 
             // 狙击弹系列
             { 621, 5 },     // 狙击弹 - 生锈弹
@@ -65,6 +85,8 @@ namespace FireWithMoney
             { 700, 105 },   // 狙击弹 - 穿甲弹
             { 701, 350 },   // 狙击弹 - 高级穿甲弹
             { 702, 1040},   // 狙击弹 - 特种穿甲弹
+            // 暗区突围
+            { 4300005, 1040 },   // SNP-实心铜空尖弹头穿甲弹
 
             // 霰弹系列
             { 630, 3 },     // 霰弹 - 生锈弹
@@ -72,12 +94,20 @@ namespace FireWithMoney
             { 633, 126 },   // 霰弹 - 穿甲弹
             { 634, 360 },   // 霰弹 - 高级穿甲弹
             { 707, 624 },   // 霰弹 - 特种穿甲弹
+            // 暗区突围
+            { 4300004, 768 },   // SHT-钨芯散射穿甲霰弹
+            // J-lab扩展包
+            { 20250662, 180 },  // SHT-肉伤弹：霰弹
+            { 20250659, 400 },  // SHT-碎甲弹：霰弹
+            { 20250657, 1200 }, // SHT-钝伤弹：霰弹
 
             // 箭
             { 648, 3 },     // 木矢
             { 870, 98 },    // 低级穿甲箭
             { 871, 326 },   // 中级穿甲箭
             { 649, 520 },   // 爆炸矢
+            // J-lab扩展包
+            { 20250616, 2000 }, // 穿透箭矢
 
             // 能量弹
             { 650,  26},    // 小能量弹
@@ -89,6 +119,9 @@ namespace FireWithMoney
 
             // 粑粑
             { 944, 1 },     // 粑粑弹
+            
+            // J-lab扩展包 - Candy
+            { 20250647, 20 },   // 糖豆子弹
         };
 
         // 子弹等级排序（用于显示顺序）
@@ -96,24 +129,62 @@ namespace FireWithMoney
         {
             // S弹
             { 594, 0 }, { 595, 1 }, { 597, 2 }, { 598, 3 }, { 691, 4 },
+            // 暗区突围
+            { 4300003, 5 },     // S-超压穿甲手枪弹
+            // J-lab扩展包
+            { 20250626, 6 },    // S-肉伤弹
+            { 20250612, 7 },    // S-碎甲弹
+            { 20250627, 8 },    // S-钝伤弹
+
             // AR弹
             { 603, 0 }, { 604, 1 }, { 606, 2 }, { 607, 3 }, { 694, 4 },
+            // 暗区突围
+            { 4300001, 5 },     // AR-碳化钨芯穿甲弹
+            // J-lab扩展包
+            { 20250661, 6 },    // AR-肉伤弹
+            { 20250658, 7 },    // AR-碎甲弹
+            { 20250655, 8 },    // AR-钝伤弹
+
             // L弹
             { 612, 0 }, { 613, 1 }, { 615, 2 }, { 616, 3 }, { 698, 4 },
+            // 暗区突围
+            { 4300002, 5 }, // L-硬化钢芯穿甲弹
+
             // MAG弹
             { 640, 0 }, { 708, 1 }, { 709, 2 }, { 710, 3 },
+            // 暗区突围
+            { 4300006, 4 }, // MAG-全被甲硬心穿甲弹
+
             // 狙击弹
             { 621, 0 }, { 622, 1 }, { 700, 2 }, { 701, 3 }, { 702, 4 },
+            // 暗区突围
+            { 4300005, 5 }, // SNP-实心铜空尖弹头穿甲弹
+
             // 霰弹
             { 630, 0 }, { 631, 1 }, { 633, 2 }, { 634, 3 }, { 707, 4 },
+            // 暗区突围
+            { 4300004, 5 }, // SHT-钨芯散射穿甲霰弹
+            // J-lab扩展包
+            { 20250662, 6 },    // SHT-肉伤弹：霰弹
+            { 20250659, 7 },    // SHT-碎甲弹：霰弹
+            { 20250657, 8 },    // SHT-钝伤弹：霰弹
+
             // 箭
             { 648, 0 }, { 870, 1 }, { 871, 2 }, { 649, 3 },
+            // J-lab扩展包
+            { 20250616, 4 },    // 穿透箭矢
+
             // 能量弹
             { 650, 0 }, { 1162, 1 }, { 918, 2 },
+
             // 火箭弹
             { 326, 0 },
+
             // 粑粑
             { 944, 0 },
+            
+            // J-lab扩展包 - Candy
+            { 20250647, 0 },   // 糖豆子弹
         };
 
         private Harmony _harmony;
@@ -121,20 +192,55 @@ namespace FireWithMoney
         protected override void OnAfterSetup()
         {
             Instance = this;
-            _harmony = new Harmony("com.duckov.moneyfire");
-            _harmony.PatchAll();
-            Debug.Log("[FireWithMoney] Mod loaded! Bullet purchase system enabled");
-            Debug.Log("[FireWithMoney] Bullet type prices configured:");
-            foreach (var kvp in BulletTypeCosts)
+            _harmony = new Harmony("com.duckov.firewithmoney");
+            
+            try
             {
-                Debug.Log($"  - Bullet {kvp.Key}: {kvp.Value} cash per round");
+                _harmony.PatchAll();
+                Debug.Log("[FireWithMoney] Mod loaded! Bullet purchase system enabled");
+                Debug.Log("[FireWithMoney] Bullet type prices configured:");
+                foreach (var kvp in BulletTypeCosts)
+                {
+                    Debug.Log($"  - Bullet {kvp.Key}: {kvp.Value} cash per round");
+                }
+                Debug.Log("[FireWithMoney] Press Shift+B to toggle payment mode (Bank/Cash)");
+                
+                // 检查潜在冲突
+                CheckCompatibility();
             }
-            Debug.Log("[FireWithMoney] Press Ctrl+B to toggle payment mode (Bank/Cash)");
+            catch (Exception ex)
+            {
+                Debug.LogError($"[FireWithMoney] Failed to load mod: {ex.Message}");
+            }
+        }
+        
+        private void CheckCompatibility()
+        {
+            // 检查是否有其他 mod 也 patch 了相同方法
+            var gunPatches = Harmony.GetPatchInfo(AccessTools.Method(typeof(ItemSetting_Gun), "GetBulletTypesInInventory"));
+            if (gunPatches != null)
+            {
+                int postfixCount = gunPatches.Postfixes.Count;
+                if (postfixCount > 1)
+                {
+                    Debug.LogWarning($"[FireWithMoney] Detected {postfixCount} Postfix patches on GetBulletTypesInInventory. Possible mod conflicts.");
+                }
+            }
+            
+            var reloadPatches = Harmony.GetPatchInfo(AccessTools.Method(typeof(ItemAgent_Gun), "BeginReload"));
+            if (reloadPatches != null)
+            {
+                int prefixCount = reloadPatches.Prefixes.Count;
+                if (prefixCount > 1)
+                {
+                    Debug.LogWarning($"[FireWithMoney] Detected {prefixCount} Prefix patches on BeginReload. Possible mod conflicts.");
+                }
+            }
         }
 
         private void Update()
         {
-            // 监听 Ctrl+B 键切换支付模式（改用 B 避免与换弹 R 键冲突）
+            // 监听 Shift+B 键切换支付模式
             if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKeyDown(KeyCode.B))
             {
                 UseBankBalance = !UseBankBalance;
@@ -151,7 +257,7 @@ namespace FireWithMoney
         protected override void OnBeforeDeactivate()
         {
             if (_harmony != null)
-                _harmony.UnpatchAll("com.duckov.moneyfire");
+                _harmony.UnpatchAll("com.duckov.firewithmoney");
             Debug.Log("[FireWithMoney] Mod unloaded");
         }
 
