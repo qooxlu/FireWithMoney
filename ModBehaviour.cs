@@ -16,6 +16,12 @@ namespace FireWithMoney
     {
         public static ModBehaviour Instance;
         
+        // 支付模式开关（true=银行卡, false=现金）
+        public bool UseBankBalance = true;
+        
+        // 现金物品ID
+        public int CashItemID = 451;
+        
         // 默认消耗
         public int DefaultCostPerShot = 10;
         
@@ -119,6 +125,23 @@ namespace FireWithMoney
             {
                 Debug.Log($"  - Bullet {kvp.Key}: {kvp.Value} cash per round");
             }
+            Debug.Log("[FireWithMoney] Press B to toggle payment mode (Bank/Cash)");
+        }
+
+        private void Update()
+        {
+            // 监听 B 键切换支付模式
+            if (Input.GetKeyDown(KeyCode.B))
+            {
+                UseBankBalance = !UseBankBalance;
+                string mode = UseBankBalance ? "银行卡" : "现金";
+                
+                if (CharacterMainControl.Main != null)
+                {
+                    CharacterMainControl.Main.PopText($"[支付模式] {mode}", -1f);
+                    Debug.Log($"[FireWithMoney] Payment mode switched to: {mode}");
+                }
+            }
         }
 
         protected override void OnBeforeDeactivate()
@@ -139,10 +162,29 @@ namespace FireWithMoney
 
         public bool HasEnoughMoney(int amount)
         {
-            return EconomyManager.Money >= amount;
+            if (UseBankBalance)
+            {
+                return EconomyManager.Money >= amount;
+            }
+            else
+            {
+                return GetCashInInventory() >= amount;
+            }
         }
 
         public bool TryDeductMoney(int amount)
+        {
+            if (UseBankBalance)
+            {
+                return DeductFromBank(amount);
+            }
+            else
+            {
+                return DeductFromInventory(amount);
+            }
+        }
+
+        private bool DeductFromBank(int amount)
         {
             long currentMoney = EconomyManager.Money;
             if (currentMoney >= amount)
@@ -171,6 +213,59 @@ namespace FireWithMoney
                 }
             }
             return false;
+        }
+
+        private int GetCashInInventory()
+        {
+            if (CharacterMainControl.Main == null) return 0;
+            
+            var inventory = CharacterMainControl.Main.CharacterItem.Inventory;
+            if (inventory == null) return 0;
+
+            int totalCash = 0;
+            foreach (var item in inventory.Content)
+            {
+                if (item != null && item.TypeID == CashItemID && item.Stackable)
+                {
+                    totalCash += item.StackCount;
+                }
+            }
+            return totalCash;
+        }
+
+        private bool DeductFromInventory(int amount)
+        {
+            if (CharacterMainControl.Main == null) return false;
+            
+            var inventory = CharacterMainControl.Main.CharacterItem.Inventory;
+            if (inventory == null) return false;
+
+            int totalCash = GetCashInInventory();
+            if (totalCash < amount) return false;
+
+            int remaining = amount;
+            var cashItems = inventory.Content.Where(item => 
+                item != null && item.TypeID == CashItemID && item.Stackable).ToList();
+
+            foreach (var item in cashItems)
+            {
+                if (remaining <= 0) break;
+
+                int stackCount = item.StackCount;
+                if (stackCount <= remaining)
+                {
+                    remaining -= stackCount;
+                    item.DestroyTree();
+                }
+                else
+                {
+                    item.StackCount = stackCount - remaining;
+                    remaining = 0;
+                }
+            }
+
+            Debug.Log($"[FireWithMoney] Deducted {amount} cash from inventory. Remaining: {totalCash - amount}");
+            return remaining == 0;
         }
 
         public List<int> GetAllBulletTypesForCaliber(string caliber)
@@ -294,21 +389,25 @@ namespace FireWithMoney
                 int costPerBullet = mod.GetCostForBulletType(targetBulletID);
                 int totalCost = costPerBullet * bulletsNeeded;
 
+                // 如果余额不足，尝试购买能负担的最大数量
                 if (!mod.HasEnoughMoney(totalCost))
                 {
-                    // 如果余额不足，判断最小购买量
-                    int affordableBullets = (int)(EconomyManager.Money / costPerBullet);
+                    long availableMoney = mod.UseBankBalance ? EconomyManager.Money : mod.GetCashInInventory();
+                    int affordableBullets = (int)(availableMoney / costPerBullet);
+                    
                     if (affordableBullets <= 0)
                     {
-                        __instance.Holder.PopText($"余额不足！需要 {totalCost} 元", -1f);
+                        string paymentType = mod.UseBankBalance ? "银行卡💳" : "现金💵";
+                        __instance.Holder.PopText($"{paymentType}余额不足！需要 {totalCost}", -1f);
                         return;
                     }
-                    else
-                    {
-                        bulletsNeeded = affordableBullets;
-                        totalCost = costPerBullet * bulletsNeeded;
-                    }
                     
+                    // 调整为可负担的数量
+                    bulletsNeeded = affordableBullets;
+                    totalCost = costPerBullet * bulletsNeeded;
+                    
+                    string paymentTypeInfo = mod.UseBankBalance ? "银行卡💳" : "现金💵";
+                    __instance.Holder.PopText($"{paymentTypeInfo}余额不足，购买 {bulletsNeeded} 发", 1f);
                 }
 
                 // 扣款并临时创建子弹到背包
@@ -326,23 +425,48 @@ namespace FireWithMoney
                         
                         if (added)
                         {
-                            __instance.Holder.PopText($"购买弹药 -{totalCost} 元", -1f);
+                            string paymentType = mod.UseBankBalance ? "银行卡" : "现金";
+                            __instance.Holder.PopText($"{paymentType} -{totalCost}", -1f);
                             Debug.Log($"[FireWithMoney] Added {bulletsNeeded} bullets to inventory for reload");
                         }
                         else
                         {
                             // 添加失败，退款
                             bulletItem.DestroyTree();
-                            typeof(EconomyManager).GetField("money", BindingFlags.Instance | BindingFlags.NonPublic)
-                                ?.SetValue(EconomyManager.Instance, EconomyManager.Money + totalCost);
+                            if (mod.UseBankBalance)
+                            {
+                                typeof(EconomyManager).GetField("money", BindingFlags.Instance | BindingFlags.NonPublic)
+                                    ?.SetValue(EconomyManager.Instance, EconomyManager.Money + totalCost);
+                            }
+                            else
+                            {
+                                var refundItem = ItemAssetsCollection.InstantiateSync(mod.CashItemID);
+                                if (refundItem != null && refundItem.Stackable)
+                                {
+                                    refundItem.StackCount = totalCost;
+                                    inventory.AddAndMerge(refundItem, 0);
+                                }
+                            }
                             Debug.LogError("[FireWithMoney] Failed to add bullets to inventory, refunded");
                         }
                     }
                     else
                     {
                         // 创建失败，退款
-                        typeof(EconomyManager).GetField("money", BindingFlags.Instance | BindingFlags.NonPublic)
-                            ?.SetValue(EconomyManager.Instance, EconomyManager.Money + totalCost);
+                        if (mod.UseBankBalance)
+                        {
+                            typeof(EconomyManager).GetField("money", BindingFlags.Instance | BindingFlags.NonPublic)
+                                ?.SetValue(EconomyManager.Instance, EconomyManager.Money + totalCost);
+                        }
+                        else
+                        {
+                            var refundItem = ItemAssetsCollection.InstantiateSync(mod.CashItemID);
+                            if (refundItem != null && refundItem.Stackable)
+                            {
+                                refundItem.StackCount = totalCost;
+                                inventory.AddAndMerge(refundItem, 0);
+                            }
+                        }
                         Debug.LogError("[FireWithMoney] Failed to create bullet item, refunded");
                     }
                 }
