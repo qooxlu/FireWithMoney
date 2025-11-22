@@ -125,20 +125,20 @@ namespace FireWithMoney
             {
                 Debug.Log($"  - Bullet {kvp.Key}: {kvp.Value} cash per round");
             }
-            Debug.Log("[FireWithMoney] Press B to toggle payment mode (Bank/Cash)");
+            Debug.Log("[FireWithMoney] Press Ctrl+B to toggle payment mode (Bank/Cash)");
         }
 
         private void Update()
         {
-            // 监听 B 键切换支付模式
-            if (Input.GetKeyDown(KeyCode.B))
+            // 监听 Ctrl+B 键切换支付模式（改用 B 避免与换弹 R 键冲突）
+            if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKeyDown(KeyCode.B))
             {
                 UseBankBalance = !UseBankBalance;
                 string mode = UseBankBalance ? "银行卡" : "现金";
                 
                 if (CharacterMainControl.Main != null)
                 {
-                    CharacterMainControl.Main.PopText($"[支付模式] {mode}", -1f);
+                    CharacterMainControl.Main.PopText($"[{mode}] 支付", -1f);
                     Debug.Log($"[FireWithMoney] Payment mode switched to: {mode}");
                 }
             }
@@ -215,7 +215,7 @@ namespace FireWithMoney
             return false;
         }
 
-        private int GetCashInInventory()
+        public int GetCashInInventory()
         {
             if (CharacterMainControl.Main == null) return 0;
             
@@ -397,8 +397,9 @@ namespace FireWithMoney
                     
                     if (affordableBullets <= 0)
                     {
-                        string paymentType = mod.UseBankBalance ? "银行卡💳" : "现金💵";
-                        __instance.Holder.PopText($"{paymentType}余额不足！需要 {totalCost}", -1f);
+                        string paymentType = mod.UseBankBalance ? "银行卡" : "现金";
+                        int needCost = (int)(totalCost - availableMoney);
+                        __instance.Holder.PopText($"{paymentType}余额不足！还需要 {needCost} 元", -1f);
                         return;
                     }
                     
@@ -406,7 +407,7 @@ namespace FireWithMoney
                     bulletsNeeded = affordableBullets;
                     totalCost = costPerBullet * bulletsNeeded;
                     
-                    string paymentTypeInfo = mod.UseBankBalance ? "银行卡💳" : "现金💵";
+                    string paymentTypeInfo = mod.UseBankBalance ? "银行卡" : "现金";
                     __instance.Holder.PopText($"{paymentTypeInfo}余额不足，购买 {bulletsNeeded} 发", 1f);
                 }
 
@@ -426,7 +427,7 @@ namespace FireWithMoney
                         if (added)
                         {
                             string paymentType = mod.UseBankBalance ? "银行卡" : "现金";
-                            __instance.Holder.PopText($"{paymentType} -{totalCost}", -1f);
+                            __instance.Holder.PopText($"{paymentType} -{totalCost} 元", -1f);
                             Debug.Log($"[FireWithMoney] Added {bulletsNeeded} bullets to inventory for reload");
                         }
                         else
