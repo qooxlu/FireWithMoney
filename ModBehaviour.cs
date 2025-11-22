@@ -113,8 +113,8 @@ namespace FireWithMoney
             Instance = this;
             _harmony = new Harmony("com.duckov.moneyfire");
             _harmony.PatchAll();
-            Debug.Log("[MoneyFire] Mod loaded! Bullet purchase system enabled");
-            Debug.Log("[MoneyFire] Bullet type prices configured:");
+            Debug.Log("[FireWithMoney] Mod loaded! Bullet purchase system enabled");
+            Debug.Log("[FireWithMoney] Bullet type prices configured:");
             foreach (var kvp in BulletTypeCosts)
             {
                 Debug.Log($"  - Bullet {kvp.Key}: {kvp.Value} cash per round");
@@ -125,7 +125,7 @@ namespace FireWithMoney
         {
             if (_harmony != null)
                 _harmony.UnpatchAll("com.duckov.moneyfire");
-            Debug.Log("[MoneyFire] Mod unloaded");
+            Debug.Log("[FireWithMoney] Mod unloaded");
         }
 
         public int GetCostForBulletType(int bulletTypeID)
@@ -165,7 +165,7 @@ namespace FireWithMoney
                             handler?.Invoke(currentMoney, newMoney);
                         }
                         
-                        Debug.Log($"[MoneyFire] Deducted {amount} from bank. Remaining: {newMoney}");
+                        Debug.Log($"[FireWithMoney] Deducted {amount} from bank. Remaining: {newMoney}");
                         return true;
                     }
                 }
@@ -258,7 +258,7 @@ namespace FireWithMoney
             }
             catch (Exception ex)
             {
-                Debug.LogError($"[MoneyFire] GetBulletTypesInInventory error: {ex.Message}");
+                Debug.LogError($"[FireWithMoney] GetBulletTypesInInventory error: {ex.Message}");
             }
         }
     }
@@ -284,14 +284,11 @@ namespace FireWithMoney
                 var inventory = __instance.Holder.CharacterItem.Inventory;
                 int bulletCountInInventory = gunSetting.GetBulletCountofTypeInInventory(targetBulletID, inventory);
 
-                // 如果背包已有子弹，不需要购买
-                if (bulletCountInInventory > 0) return;
-
                 // 计算需要购买的数量
                 int currentCount = gunSetting.BulletCount;
                 int capacity = gunSetting.Capacity;
-                int bulletsNeeded = capacity - currentCount;
-                
+                int bulletsNeeded = capacity - currentCount - bulletCountInInventory;
+
                 if (bulletsNeeded <= 0) return;
 
                 int costPerBullet = mod.GetCostForBulletType(targetBulletID);
@@ -306,7 +303,7 @@ namespace FireWithMoney
                 // 扣款并临时创建子弹到背包
                 if (mod.TryDeductMoney(totalCost))
                 {
-                    Debug.Log($"[MoneyFire] Purchasing {bulletsNeeded} x Bullet{targetBulletID} for {totalCost}");
+                    Debug.Log($"[FireWithMoney] Purchasing {bulletsNeeded} x Bullet{targetBulletID} for {totalCost}");
                     
                     var bulletItem = ItemAssetsCollection.InstantiateSync(targetBulletID);
                     if (bulletItem != null && bulletItem.Stackable)
@@ -319,19 +316,29 @@ namespace FireWithMoney
                         if (added)
                         {
                             __instance.Holder.PopText($"购买弹药 -{totalCost}", -1f);
-                            Debug.Log($"[MoneyFire] Added {bulletsNeeded} bullets to inventory for reload");
+                            Debug.Log($"[FireWithMoney] Added {bulletsNeeded} bullets to inventory for reload");
                         }
                         else
                         {
+                            // 添加失败，退款
                             bulletItem.DestroyTree();
-                            Debug.LogError("[MoneyFire] Failed to add bullets to inventory");
+                            typeof(EconomyManager).GetField("money", BindingFlags.Instance | BindingFlags.NonPublic)
+                                ?.SetValue(EconomyManager.Instance, EconomyManager.Money + totalCost);
+                            Debug.LogError("[FireWithMoney] Failed to add bullets to inventory, refunded");
                         }
+                    }
+                    else
+                    {
+                        // 创建失败，退款
+                        typeof(EconomyManager).GetField("money", BindingFlags.Instance | BindingFlags.NonPublic)
+                            ?.SetValue(EconomyManager.Instance, EconomyManager.Money + totalCost);
+                        Debug.LogError("[FireWithMoney] Failed to create bullet item, refunded");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Debug.LogError($"[MoneyFire] BeginReload error: {ex.Message}");
+                Debug.LogError($"[FireWithMoney] BeginReload error: {ex.Message}");
             }
         }
     }
