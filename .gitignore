@@ -12,5 +12,6 @@ Release/
 .idea/
 *.sln.DotSettings.user
 
-# Bat
+# Others
 *.bat
+README.txt

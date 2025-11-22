@@ -1,4 +1,8 @@
 // encoding: utf-8
+// 纸弹 - 有钱真的可以随时随地买弹药
+// FireWithMoney - Buy Ammo Anytime, Anywhere
+// Copyright (c) 2025 Shadowrabbit
+// Licensed under the MIT License
 
 using System;
 using System.Collections.Generic;
