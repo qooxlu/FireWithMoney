@@ -14,10 +14,13 @@ FireWithMoney/
 │   └── PaymentMode.cs           # 支付模式枚举
 ├── Managers/
 │   ├── MoneyManager.cs          # 资金管理（银行卡/现金）
-│   └── BulletManager.cs         # 子弹管理（获取、排序）
+│   ├── BulletManager.cs         # 子弹管理（获取、排序）
+│   └── WarehouseManager.cs      # 仓库管理（转移子弹）
+├── Utilities/
+│   └── Extensions.cs            # 扩展方法（自定义 PopText）
 └── Patch/
     ├── Patch_GetBulletTypesInInventory.cs  # 显示所有子弹类型的补丁
-    └── Patch_BeginReload.cs                # 装弹购买系统的补丁
+    └── Patch_BeginReload.cs                # 装弹购买系统的补丁（含仓库支持）
 ```
 
 ## 📦 模块说明
@@ -51,15 +54,28 @@ FireWithMoney/
   - 获取指定口径的所有子弹
   - 按等级排序子弹类型
 
+- **WarehouseManager.cs**: 仓库管理 🆕
+  - 查询仓库中子弹数量
+  - 从仓库转移子弹到背包
+  - 支持部分转移和完整堆叠转移
+
+### Utilities - 工具模块 🆕
+- **Extensions.cs**: 扩展方法
+  - 使用反射调用游戏内部 API
+  - 解决原版 PopText 只能显示2秒的限制
+
 ### Patch - Harmony 补丁模块
 - **Patch_GetBulletTypesInInventory.cs**
   - 显示所有可用子弹类型（包括背包中没有的）
   - 按等级自动排序
 
-- **Patch_BeginReload.cs**
-  - 装弹时自动购买所需子弹
+- **Patch_BeginReload.cs** 🆕 增强版
+  - **智能子弹获取系统**：
+    1. 首先使用背包中现有的子弹
+    2. 背包不足时，自动从仓库转移子弹到背包
+    3. 仓库也不足时，使用金钱购买所需子弹
   - 余额不足时提示并购买最大可负担数量
-  - 失败时自动退款
+  - 所有操作失败时自动退款/回滚
 
 ## 🎯 设计优势
 
@@ -86,3 +102,15 @@ FireWithMoney/
 ## 📝 使用说明
 
 游戏中按 **Shift+B** 可以切换支付模式（银行卡/现金）。
+
+### 装弹优先级 🎯
+1. **背包** - 优先使用背包中现有的子弹
+2. **仓库** - 背包不足时，自动从仓库转移子弹 (目前仅在基地可用)
+3. **购买** - 仓库也不足时，根据支付模式购买子弹
+   - 银行卡模式：从银行账户扣款
+   - 现金模式：消耗背包中的现金物品
+
+### 提示信息
+- 从仓库转移时会显示：`从仓库转移 X 发子弹`
+- 购买子弹时会显示：`银行卡/现金 -X 元`
+- 余额不足时会提示：`余额不足！还需要 X 元 [按 Shift+B 切换支付方式]`

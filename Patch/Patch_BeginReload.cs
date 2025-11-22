@@ -4,6 +4,7 @@
 // Licensed under the MIT License
 
 using System;
+using System.Collections;
 using System.Reflection;
 using HarmonyLib;
 using ItemStatsSystem;
@@ -36,11 +37,33 @@ namespace FireWithMoney.Patch
                 var inventory = __instance.Holder.CharacterItem.Inventory;
                 int bulletCountInInventory = gunSetting.GetBulletCountofTypeInInventory(targetBulletID, inventory);
 
-                // 计算需要购买的数量
+                // 计算需要的总数量
                 int currentCount = gunSetting.BulletCount;
                 int capacity = gunSetting.Capacity;
                 int bulletsNeeded = capacity - currentCount - bulletCountInInventory;
 
+                if (bulletsNeeded <= 0) return;
+
+                // 步骤1: 首先尝试从仓库转移子弹到背包（仅在基地可用）
+                int transferredFromWarehouse = 0;
+                if (bulletsNeeded > 0 && PlayerStorage.Inventory != null)
+                {
+                    int warehouseCount = mod.WarehouseManager.GetItemCountInWarehouse(targetBulletID);
+                    if (warehouseCount > 0)
+                    {
+                        int toTransfer = Mathf.Min(bulletsNeeded, warehouseCount);
+                        transferredFromWarehouse = mod.WarehouseManager.TransferFromWarehouse(targetBulletID, toTransfer, inventory);
+                        bulletsNeeded -= transferredFromWarehouse;
+                        
+                        if (transferredFromWarehouse > 0)
+                        {
+                            Debug.Log($"[FireWithMoney] Transferred {transferredFromWarehouse} bullets from warehouse to inventory");
+                            __instance.Holder.PopText($"从仓库转移 {transferredFromWarehouse} 发子弹");
+                        }
+                    }
+                }
+
+                // 步骤2: 如果仍然不够，则使用金钱购买
                 if (bulletsNeeded <= 0) return;
 
                 int costPerBullet = BulletConfig.GetCostForBulletType(targetBulletID);
@@ -56,7 +79,13 @@ namespace FireWithMoney.Patch
                     {
                         string paymentType = mod.MoneyManager.GetPaymentModeName();
                         int needCost = (int)(totalCost - availableMoney);
-                        __instance.Holder.PopText($"{paymentType}余额不足！还需要 {needCost} 元 [按 Shift+B 切换支付方式]", -1f);
+                        Debug.LogWarning($"[FireWithMoney] Insufficient {paymentType} balance. Need additional {needCost} units.");
+                        
+                        // 使用协程延迟显示，避免被游戏默认提示覆盖
+                        __instance.Holder.StartCoroutine(DelayedPopText(
+                            __instance.Holder, 
+                            $"{paymentType}余额不足！还需要 {needCost} 元 [按 Shift+B 切换支付方式]", 
+                            0.0f));
                         return;
                     }
                     
@@ -65,7 +94,13 @@ namespace FireWithMoney.Patch
                     totalCost = costPerBullet * bulletsNeeded;
                     
                     string paymentTypeInfo = mod.MoneyManager.GetPaymentModeName();
-                    __instance.Holder.PopText($"{paymentTypeInfo}余额不足，购买 {bulletsNeeded} 发 [按 Shift+B 切换支付方式]", 1f);
+                    Debug.LogWarning($"[FireWithMoney] Insufficient funds. Adjusted purchase to {bulletsNeeded} bullets costing {totalCost} units.");
+                    
+                    // 使用协程延迟显示
+                    __instance.Holder.StartCoroutine(DelayedPopText(
+                        __instance.Holder, 
+                        $"{paymentTypeInfo}余额不足，购买 {bulletsNeeded} 发 [按 Shift+B 切换支付方式]",
+                        0.0f));
                 }
 
                 // 扣款并临时创建子弹到背包
@@ -84,7 +119,7 @@ namespace FireWithMoney.Patch
                         if (added)
                         {
                             string paymentType = mod.MoneyManager.GetPaymentModeName();
-                            __instance.Holder.PopText($"{paymentType} -{totalCost} 元", -1f);
+                            __instance.Holder.PopText($"{paymentType} -{totalCost} 元");
                             Debug.Log($"[FireWithMoney] Added {bulletsNeeded} bullets to inventory for reload");
                         }
                         else
@@ -106,6 +141,18 @@ namespace FireWithMoney.Patch
             catch (Exception ex)
             {
                 Debug.LogError($"[FireWithMoney] BeginReload error: {ex.Message}");
+            }
+        }
+        
+        /// <summary>
+        /// 延迟显示 PopText，避免被游戏默认提示覆盖
+        /// </summary>
+        private static IEnumerator DelayedPopText(CharacterMainControl character, string text, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            if (character != null)
+            {
+                character.PopText(text);
             }
         }
     }

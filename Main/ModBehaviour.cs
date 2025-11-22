@@ -28,6 +28,11 @@ namespace FireWithMoney
         /// </summary>
         public BulletManager BulletManager { get; private set; }
 
+        /// <summary>
+        /// 仓库管理器
+        /// </summary>
+        public WarehouseManager WarehouseManager { get; private set; }
+
         private Harmony _harmony;
 
         protected override void OnAfterSetup()
@@ -37,6 +42,7 @@ namespace FireWithMoney
             // 初始化管理器
             MoneyManager = new MoneyManager();
             BulletManager = new BulletManager();
+            WarehouseManager = new WarehouseManager();
             
             // 应用 Harmony 补丁
             _harmony = new Harmony("com.duckov.firewithmoney");
@@ -93,7 +99,7 @@ namespace FireWithMoney
                 
                 if (CharacterMainControl.Main != null)
                 {
-                    CharacterMainControl.Main.PopText($"[{mode}] 支付", -1f);
+                    CharacterMainControl.Main.PopText($"[{mode}] 支付");
                     Debug.Log($"[FireWithMoney] Payment mode switched to: {mode}");
                 }
             }
