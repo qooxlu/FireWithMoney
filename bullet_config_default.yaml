@@ -287,6 +287,12 @@ bullets_thirdparty:
     price: 700
     display: true
 
+  # J-lab扩展包 - 狙击弹
+  - id: 20250712
+    name: "亚音速狙击弹"
+    price: 10000
+    display: true
+
   # J-lab扩展包 - 霰弹
   - id: 20250662
     name: "SHT-肉伤弹：霰弹"

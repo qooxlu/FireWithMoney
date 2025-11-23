@@ -1,0 +1,42 @@
+# 弹药配置文件
+# ！！！重要： steam 创意工坊更新时候，会覆盖此文件，请注意备份该文件！！！
+
+# 取消注释并修改以下示例以添加自定义弹药
+# 可以参考bullet_config_default.yaml中的默认配置
+
+# 配置说明
+# id: 弹药ID（游戏内物品类型ID）
+# name: 弹药名称
+# price: 弹药价格（每发）
+# display: 是否显示在列表中 (true/false)
+
+bullets_userdefined:
+  # S弹系列
+  - id: 594
+    name: "S弹 - 生锈弹"
+    price: 1
+    display: false
+    
+  # AR弹系列
+  - id: 603
+    name: "AR弹 - 生锈弹"
+    price: 1
+    display: false
+
+  # L弹系列
+  - id: 612
+    name: "L弹 - 生锈弹"
+    price: 2
+    display: false
+
+  # 狙击弹系列
+  - id: 621
+    name: "狙击弹 - 生锈弹"
+    price: 5
+    display: false
+    
+  # 霰弹系列
+  - id: 630
+    name: "霰弹 - 生锈弹"
+    price: 3
+    display: false

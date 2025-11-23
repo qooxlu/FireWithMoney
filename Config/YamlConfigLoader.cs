@@ -43,7 +43,7 @@ namespace FireWithMoney.Config
                     string trimmedLine = line.Trim();
                     
                     // 跳过注释和空行
-                    if (string.IsNullOrWhiteSpace(trimmedLine) || trimmedLine.StartsWith("#"))
+                    if (string.IsNullOrWhiteSpace(trimmedLine) || trimmedLine.TrimStart().StartsWith("#"))
                         continue;
 
                     // 检测新的配置项开始（以 "- id:" 开头）
