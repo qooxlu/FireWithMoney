@@ -107,8 +107,7 @@ namespace FireWithMoney
 
         protected override void OnBeforeDeactivate()
         {
-            if (_harmony != null)
-                _harmony.UnpatchAll("com.duckov.firewithmoney");
+            _harmony?.UnpatchAll("com.duckov.firewithmoney");
             Debug.Log("[FireWithMoney] Mod unloaded");
         }
     }

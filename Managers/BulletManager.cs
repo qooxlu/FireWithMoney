@@ -23,7 +23,7 @@ namespace FireWithMoney.Managers
             var allBullets = new List<int>();
             int caliberHash = "Caliber".GetHashCode();
             
-            foreach (var bulletTypeID in BulletConfig.BulletTypeCosts.Keys)
+            foreach (var bulletTypeID in BulletConfig.BulletTierOrder.Keys)
             {
                 try
                 {
