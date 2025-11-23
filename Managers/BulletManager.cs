@@ -23,8 +23,12 @@ namespace FireWithMoney.Managers
             var allBullets = new List<int>();
             int caliberHash = "Caliber".GetHashCode();
             
-            foreach (var bulletTypeID in BulletConfig.BulletTierOrder.Keys)
+            foreach (var bulletTypeID in BulletConfig.BulletTypeCosts.Keys)
             {
+                // 检查是否应该显示该子弹
+                if (!BulletConfig.IsBulletShownInSwitchList(bulletTypeID))
+                    continue;
+                
                 try
                 {
                     var prefab = ItemAssetsCollection.GetPrefab(bulletTypeID);

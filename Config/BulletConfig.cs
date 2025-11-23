@@ -4,6 +4,9 @@
 // Licensed under the MIT License
 
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using UnityEngine;
 
 namespace FireWithMoney.Config
 {
@@ -12,15 +15,84 @@ namespace FireWithMoney.Config
     /// </summary>
     public static class BulletConfig
     {
+        private static bool _isConfigLoaded = false;
+        private static Dictionary<int, BulletConfigData> _bulletConfigCache = new Dictionary<int, BulletConfigData>();
+
         /// <summary>
-        /// 默认每发子弹消耗（厨师售价的两倍）
+        /// 默认每发子弹消耗
         /// </summary>
         public const int DefaultCostPerShot = 10;
 
         /// <summary>
         /// 不同子弹类型的消耗配置（每发子弹的价格）
         /// </summary>
-        public static readonly Dictionary<int, int> BulletTypeCosts = new Dictionary<int, int>
+        public static Dictionary<int, int> BulletTypeCosts
+        {
+            get
+            {
+                LoadConfigIfNeeded();
+                return _bulletConfigCache.ToDictionary(kv => kv.Key, kv => kv.Value.Price);
+            }
+        }
+
+        /// <summary>
+        /// 加载配置文件（如果尚未加载）
+        /// </summary>
+        private static void LoadConfigIfNeeded()
+        {
+            if (_isConfigLoaded)
+                return;
+
+            _isConfigLoaded = true;
+            _bulletConfigCache.Clear();
+
+            // 构建配置文件路径
+            string modDirectory = Path.GetDirectoryName(typeof(BulletConfig).Assembly.Location);
+            string configPath = Path.Combine(modDirectory, "bullet_config.yaml");
+
+            Debug.Log($"[FireWithMoney] 尝试加载配置文件: {configPath}");
+
+            // 如果配置文件不存在，则复制一份配置文件模板过去
+            if (!File.Exists(configPath))
+            {
+                string templatePath = Path.Combine(modDirectory, "bullet_config_template.yaml");
+                if (File.Exists(templatePath))
+                {
+                    File.Copy(templatePath, configPath);
+                    Debug.Log($"[FireWithMoney] 配置文件不存在，已复制模板到: {configPath}");
+                }
+                else
+                {
+                    Debug.LogWarning($"[FireWithMoney] 配置文件和模板均不存在: {configPath}，{templatePath}");
+                }
+            }
+
+            // 加载 YAML 配置
+            var bulletConfigs = YamlConfigLoader.LoadBulletConfig(configPath);
+            
+            if (bulletConfigs != null && bulletConfigs.Count > 0)
+            {
+                foreach (var config in bulletConfigs)
+                {
+                    _bulletConfigCache[config.Id] = config;
+                }
+                Debug.Log($"[FireWithMoney] 配置加载完成，共 {_bulletConfigCache.Count} 个子弹类型");
+            }
+            else
+            {
+                // 使用后备硬编码配置
+                Debug.LogWarning("[FireWithMoney] YAML 配置加载失败或为空，使用后备硬编码配置");
+                foreach (var kv in _fallbackBulletTypeCosts)
+                {
+                    _bulletConfigCache[kv.Key] = new BulletConfigData(kv.Key, $"Bullet_{kv.Key}", kv.Value, true);
+                }
+                Debug.Log($"[FireWithMoney] 后备配置加载完成，共 {_bulletConfigCache.Count} 个子弹类型");
+
+            }
+        }
+
+        // 以下为后备硬编码配置（如果 YAML 加载失败）
+        private static readonly Dictionary<int, int> _fallbackBulletTypeCosts = new Dictionary<int, int>
         {
             // S弹系列
             { 594, 1 },    // S弹 - 生锈弹
@@ -134,98 +206,39 @@ namespace FireWithMoney.Config
         };
 
         /// <summary>
-        /// 子弹等级排序（用于显示顺序）
+        /// 获取指定子弹是否显示在 T 键的弹药切换列表中
         /// </summary>
-        public static readonly Dictionary<int, int> BulletTierOrder = new Dictionary<int, int>
+        public static bool IsBulletShownInSwitchList(int bulletTypeID)
         {
-            // S弹
-            { 594, 0 }, { 595, 1 }, { 597, 2 }, { 598, 3 }, { 691, 4 },
-            // 鸭区突围
-            { 4300003, 5 },     // S-超压穿甲手枪弹
-            // J-lab扩展包
-            { 20250626, 6 },    // S-肉伤弹
-            { 20250612, 7 },    // S-碎甲弹
-            { 20250627, 8 },    // S-钝伤弹
-            // T-7
-            { 1380011, 9 }, // S-量产穿甲弹
-            { 1380047, 10 }, // S-猎杀者穿甲弹
-            { 1380411, 11 }, // S-特种爆破弹
-
-            // AR弹
-            { 603, 0 }, { 604, 1 }, { 606, 2 }, { 607, 3 }, { 694, 4 },
-            // 鸭区突围
-            { 4300001, 5 },     // AR-碳化钨芯穿甲弹
-            // J-lab扩展包
-            { 20250661, 6 },    // AR-肉伤弹
-            { 20250658, 7 },    // AR-碎甲弹
-            { 20250655, 8 },    // AR-钝伤弹
-            // T-7
-            { 1380031, 9 }, // AR-猎杀者穿甲弹
-
-            // L弹
-            { 612, 0 }, { 613, 1 }, { 615, 2 }, { 616, 3 }, { 698, 4 },
-            // 鸭区突围
-            { 4300002, 5 }, // BR-硬化钢芯穿甲弹
-            // T-7
-            { 1380023, 6 }, // L-猎杀者穿甲弹
-
-            // MAG弹
-            { 640, 0 }, { 708, 1 }, { 709, 2 }, { 710, 3 },
-            // 鸭区突围
-            { 4300006, 4 }, // MAG-全被甲硬心穿甲弹
-            // T-7
-            { 1380013, 5 }, // MAG-重型穿甲弹
-
-            // 狙击弹
-            { 621, 0 }, { 622, 1 }, { 700, 2 }, { 701, 3 }, { 702, 4 },
-            // 鸭区突围
-            { 4300005, 5 }, // SNP-实心铜空尖弹头穿甲弹
-            // T-7
-            { 1380043, 6 }, // 猎杀者穿甲狙击弹
-
-            // 霰弹
-            { 630, 0 }, { 631, 1 }, { 633, 2 }, { 634, 3 }, { 707, 4 },
-            // 鸭区突围
-            { 4300004, 5 }, // SHT-钨芯散射穿甲霰弹
-            // J-lab扩展包
-            { 20250662, 6 },    // SHT-肉伤弹：霰弹
-            { 20250659, 7 },    // SHT-碎甲弹：霰弹
-            { 20250657, 8 },    // SHT-钝伤弹：霰弹
-            // T-7
-            { 1380045, 47 },    // 猎杀者穿甲霰弹
-
-            // 箭
-            { 648, 0 }, { 870, 1 }, { 871, 2 }, { 649, 3 },
-            // J-lab扩展包
-            { 20250616, 4 },    // 穿透箭矢
-
-            // 能量弹
-            { 650, 0 }, { 1162, 1 }, { 918, 2 },
-            // T-7
-            { 1380049, 3 }, // 量产小型能量弹
-            { 1380035, 4 }, // 量产大型能量弹
-
-            // 火箭弹
-            { 326, 0 },
-            // T-7
-            { 1380019, 1 }, // 加强火箭弹
-
-            // 粑粑
-            { 944, 0 },
+            LoadConfigIfNeeded();
             
-            // J-lab扩展包 - Candy
-            { 20250647, 0 },   // 糖豆子弹
-        };
+            if (_bulletConfigCache.TryGetValue(bulletTypeID, out var config))
+            {
+                return config.Display;
+            }
+            
+            // 如果配置中没有，默认显示
+            return true;
+        }
 
         /// <summary>
         /// 获取指定子弹类型的价格
         /// </summary>
         public static int GetCostForBulletType(int bulletTypeID)
         {
-            if (BulletTypeCosts.TryGetValue(bulletTypeID, out int cost))
+            LoadConfigIfNeeded();
+            
+            if (_bulletConfigCache.TryGetValue(bulletTypeID, out var config))
+            {
+                return config.Price;
+            }
+            
+            // 如果配置中没有，尝试后备配置
+            if (_fallbackBulletTypeCosts.TryGetValue(bulletTypeID, out int cost))
             {
                 return cost;
             }
+            
             return DefaultCostPerShot;
         }
 
@@ -234,11 +247,20 @@ namespace FireWithMoney.Config
         /// </summary>
         public static int GetTierOrder(int bulletTypeID)
         {
-            if (BulletTierOrder.TryGetValue(bulletTypeID, out int tier))
+            LoadConfigIfNeeded();
+            
+            if (_bulletConfigCache.TryGetValue(bulletTypeID, out var config))
             {
-                return tier;
+                return config.Price; // 使用价格作为排序依据
             }
-            return 999;
+            
+            // 如果配置中没有，尝试后备配置
+            if (_fallbackBulletTypeCosts.TryGetValue(bulletTypeID, out int tier_of_cost))
+            {
+                return tier_of_cost;
+            }
+            
+            return 9999;
         }
     }
 }

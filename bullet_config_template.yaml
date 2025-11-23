@@ -1,0 +1,379 @@
+# 弹药配置文件
+
+# 配置说明
+# id: 弹药ID（游戏内物品类型ID）
+# name: 弹药名称
+# price: 弹药价格（每发）
+# display: 是否显示在列表中 (true/false)
+
+bullets_default:
+  # S弹系列
+  - id: 594
+    name: "S弹 - 生锈弹"
+    price: 1
+    display: true
+    
+  - id: 595
+    name: "S弹 - 普通弹"
+    price: 5
+    display: true
+    
+  - id: 597
+    name: "S弹 - 穿甲弹"
+    price: 30
+    display: true
+    
+  - id: 598
+    name: "S弹 - 高级穿甲弹"
+    price: 84
+    display: true
+    
+  - id: 691
+    name: "S弹 - 特种穿甲弹"
+    price: 144
+    display: true
+
+  # AR弹系列
+  - id: 603
+    name: "AR弹 - 生锈弹"
+    price: 1
+    display: true
+    
+  - id: 604
+    name: "AR弹 - 普通弹"
+    price: 7
+    display: true
+    
+  - id: 606
+    name: "AR弹 - 穿甲弹"
+    price: 43
+    display: true
+    
+  - id: 607
+    name: "AR弹 - 高级穿甲弹"
+    price: 120
+    display: true
+    
+  - id: 694
+    name: "AR弹 - 特种穿甲弹"
+    price: 208
+    display: true
+
+  # L弹系列
+  - id: 612
+    name: "L弹 - 生锈弹"
+    price: 2
+    display: true
+    
+  - id: 613
+    name: "L弹 - 普通弹"
+    price: 12
+    display: true
+    
+  - id: 615
+    name: "L弹 - 穿甲弹"
+    price: 75
+    display: true
+    
+  - id: 616
+    name: "L弹 - 高级穿甲弹"
+    price: 210
+    display: true
+    
+  - id: 698
+    name: "L弹 - 特种穿甲弹"
+    price: 365
+    display: true
+
+  # MAG弹系列
+  - id: 640
+    name: "MAG弹 - 普通弹"
+    price: 56
+    display: true
+    
+  - id: 708
+    name: "MAG弹 - 穿甲弹"
+    price: 168
+    display: true
+    
+  - id: 709
+    name: "MAG弹 - 高级穿甲弹"
+    price: 560
+    display: true
+    
+  - id: 710
+    name: "MAG弹 - 特种穿甲弹"
+    price: 1664
+    display: true
+
+  # 狙击弹系列
+  - id: 621
+    name: "狙击弹 - 生锈弹"
+    price: 5
+    display: true
+    
+  - id: 622
+    name: "狙击弹 - 普通弹"
+    price: 35
+    display: true
+    
+  - id: 700
+    name: "狙击弹 - 穿甲弹"
+    price: 105
+    display: true
+    
+  - id: 701
+    name: "狙击弹 - 高级穿甲弹"
+    price: 350
+    display: true
+    
+  - id: 702
+    name: "狙击弹 - 特种穿甲弹"
+    price: 1040
+    display: true
+
+  # 霰弹系列
+  - id: 630
+    name: "霰弹 - 生锈弹"
+    price: 3
+    display: true
+    
+  - id: 631
+    name: "霰弹 - 普通弹"
+    price: 21
+    display: true
+    
+  - id: 633
+    name: "霰弹 - 穿甲弹"
+    price: 126
+    display: true
+    
+  - id: 634
+    name: "霰弹 - 高级穿甲弹"
+    price: 360
+    display: true
+    
+  - id: 707
+    name: "霰弹 - 特种穿甲弹"
+    price: 624
+    display: true
+
+  # 箭
+  - id: 648
+    name: "木矢"
+    price: 3
+    display: true
+    
+  - id: 870
+    name: "低级穿甲箭"
+    price: 98
+    display: true
+    
+  - id: 871
+    name: "中级穿甲箭"
+    price: 326
+    display: true
+    
+  - id: 649
+    name: "爆炸矢"
+    price: 520
+    display: true
+
+  # 能量弹
+  - id: 650
+    name: "小能量弹"
+    price: 26
+    display: true
+    
+  - id: 1162
+    name: "强化小能量弹"
+    price: 186
+    display: true
+    
+  - id: 918
+    name: "大型能量弹"
+    price: 52
+    display: true
+
+  # 火箭弹
+  - id: 326
+    name: "火箭弹"
+    price: 520
+    display: true
+
+  # 粑粑
+  - id: 944
+    name: "粑粑弹"
+    price: 1
+    display: true
+
+bullets_thirdparty:
+  # 鸭区突围
+  - id: 4300003
+    name: "S-超压穿甲手枪弹"
+    price: 186
+    display: true
+    
+  - id: 4300001
+    name: "AR-碳化钨芯穿甲弹"
+    price: 436
+    display: true
+    
+  - id: 4300002
+    name: "BR-硬化钢芯穿甲弹"
+    price: 456
+    display: true
+    
+  - id: 4300006
+    name: "MAG-全被甲硬心穿甲弹"
+    price: 1248
+    display: true
+    
+  - id: 4300005
+    name: "SNP-实心铜空尖弹头穿甲弹"
+    price: 1040
+    display: true
+    
+  - id: 4300004
+    name: "SHT-钨芯散射穿甲霰弹"
+    price: 768
+    display: true
+
+  # J-lab扩展包 - S弹
+  - id: 20250626
+    name: "S-肉伤弹"
+    price: 50
+    display: true
+    
+  - id: 20250612
+    name: "S-碎甲弹"
+    price: 90
+    display: true
+    
+  - id: 20250627
+    name: "S-钝伤弹"
+    price: 280
+    display: true
+
+  # J-lab扩展包 - AR弹
+  - id: 20250661
+    name: "AR-肉伤弹"
+    price: 80
+    display: true
+    
+  - id: 20250658
+    name: "AR-碎甲弹"
+    price: 150
+    display: true
+    
+  - id: 20250655
+    name: "AR-钝伤弹"
+    price: 400
+    display: true
+
+  # J-lab扩展包 - L弹
+  - id: 20250663
+    name: "L-肉伤弹"
+    price: 200
+    display: true
+    
+  - id: 20250660
+    name: "L-碎甲弹"
+    price: 350
+    display: true
+    
+  - id: 20250656
+    name: "L-钝伤弹"
+    price: 700
+    display: true
+
+  # J-lab扩展包 - 霰弹
+  - id: 20250662
+    name: "SHT-肉伤弹：霰弹"
+    price: 180
+    display: true
+    
+  - id: 20250659
+    name: "SHT-碎甲弹：霰弹"
+    price: 400
+    display: true
+    
+  - id: 20250657
+    name: "SHT-钝伤弹：霰弹"
+    price: 1200
+    display: true
+
+  # J-lab扩展包 - 箭
+  - id: 20250616
+    name: "穿透箭矢"
+    price: 2000
+    display: true
+
+  # J-lab扩展包 - Candy
+  - id: 20250647
+    name: "糖豆子弹"
+    price: 20
+    display: true
+
+  # T-7 - S弹
+  - id: 1380011
+    name: "S-量产穿甲弹"
+    price: 3
+    display: true
+    
+  - id: 1380047
+    name: "S-猎杀者穿甲弹"
+    price: 46
+    display: true
+    
+  - id: 1380411
+    name: "S-特种爆破弹"
+    price: 2080
+    display: true
+
+  # T-7 - AR弹
+  - id: 1380031
+    name: "AR-猎杀者穿甲弹"
+    price: 37
+    display: true
+
+  # T-7 - L弹
+  - id: 1380023
+    name: "L-猎杀者穿甲弹"
+    price: 52
+    display: true
+
+  # T-7 - MAG弹
+  - id: 1380013
+    name: "MAG-重型穿甲弹"
+    price: 2080
+    display: true
+
+  # T-7 - 狙击弹
+  - id: 1380043
+    name: "猎杀者穿甲狙击弹"
+    price: 47
+    display: true
+
+  # T-7 - 霰弹
+  - id: 1380045
+    name: "猎杀者穿甲霰弹"
+    price: 47
+    display: true
+
+  # T-7 - 能量弹
+  - id: 1380049
+    name: "量产小型能量弹"
+    price: 4
+    display: true
+    
+  - id: 1380035
+    name: "量产大型能量弹"
+    price: 5
+    display: true
+
+  # T-7 - 火箭弹
+  - id: 1380019
+    name: "加强火箭弹"
+    price: 1560
+    display: true
